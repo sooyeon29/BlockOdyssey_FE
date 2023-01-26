@@ -9,7 +9,6 @@ const MainPage = () => {
     axios
       .get(`https://dummyjson.com/products?limit=100`)
       .then((res) => {
-        console.log(res.data.products);
         setPhoneList(res.data.products);
       })
       .catch((err) => console.log(err));
@@ -34,32 +33,38 @@ const MainPage = () => {
           <button>조회</button>
         </div>
       </SearchBox>
-      <TotalData>검색된 데이터 : {Object.keys(phoneList).length}건</TotalData>
+      <TotalData>
+        검색된 데이터 :{" "}
+        {phoneList === undefined ? "" : Object.keys(phoneList).length}건
+      </TotalData>
       <Product>
         <List>
-          <Category>
-            <th>상품번호</th>
-            <th>상품명</th>
-            <th>브랜드</th>
-            <th>상품내용</th>
-            <th>가격</th>
-            <th>평점</th>
-            <th>재고</th>
-          </Category>
-
-          {phoneList.map((phone) => {
-            return (
-              <Category key={phone.id}>
-                <td>{phone.id}</td>
-                <td>{phone.title}</td>
-                <td>{phone.brand}</td>
-                <td>{phone.description.substring(0, 40)}...</td>
-                <td>{phone.price}</td>
-                <td>{phone.rating}</td>
-                <td>{phone.stock}</td>
-              </Category>
-            );
-          })}
+          <thead>
+            <Category>
+              <th>상품번호</th>
+              <th>상품명</th>
+              <th>브랜드</th>
+              <th>상품내용</th>
+              <th>가격</th>
+              <th>평점</th>
+              <th>재고</th>
+            </Category>
+          </thead>
+          <tbody>
+            {phoneList?.map((phone) => {
+              return (
+                <Category key={phone.id}>
+                  <td>{phone.id}</td>
+                  <td>{phone.title}</td>
+                  <td>{phone.brand}</td>
+                  <td>{phone.description.substring(0, 40)}...</td>
+                  <td>{phone.price}</td>
+                  <td>{phone.rating}</td>
+                  <td>{phone.stock}</td>
+                </Category>
+              );
+            })}
+          </tbody>
         </List>
       </Product>
     </>
@@ -94,6 +99,7 @@ const SearchBox = styled.div`
   }
   button {
     width: 60px;
+    height: 35px;
     border-radius: 5px;
     margin: 10px;
     color: white;
