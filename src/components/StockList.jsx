@@ -1,6 +1,9 @@
 import styled from "styled-components";
 
-const StockList = ({ phoneList }) => {
+const StockList = ({ phoneList, mySearch }) => {
+  console.log(window.location.pathname);
+  console.log(window.location.search);
+
   return (
     <>
       <TotalData>
@@ -21,19 +24,20 @@ const StockList = ({ phoneList }) => {
             </Category>
           </thead>
           <tbody>
-            {phoneList?.map((phone) => {
-              return (
-                <Category key={phone.id}>
-                  <td>{phone.id}</td>
-                  <td>{phone.title}</td>
-                  <td>{phone.brand}</td>
-                  <td>{phone.description.substring(0, 40)}...</td>
-                  <td>{phone.price}</td>
-                  <td>{phone.rating}</td>
-                  <td>{phone.stock}</td>
-                </Category>
-              );
-            })}
+            {mySearch === undefined &&
+              phoneList?.map((phone) => {
+                return (
+                  <Category key={phone.id}>
+                    <td>{phone.id}</td>
+                    <td>{phone.title}</td>
+                    <td>{phone.brand}</td>
+                    <td>{phone.description.substring(0, 40)}...</td>
+                    <td>{phone.price}</td>
+                    <td>{phone.rating}</td>
+                    <td>{phone.stock}</td>
+                  </Category>
+                );
+              })}
           </tbody>
         </List>
       </Product>

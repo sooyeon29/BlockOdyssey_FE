@@ -1,10 +1,15 @@
 import axios from "axios";
+import { async } from "q";
 import { useEffect, useState } from "react";
 import styled from "styled-components";
 import StockList from "./components/StockList";
+import useInput from "./hooks/useInput";
 
 const HomePage = () => {
   const [phoneList, setPhoneList] = useState();
+  const [myOption, setMyOption] = useState();
+  const [searchWord, setSearchWord] = useState();
+  const [mySearch, setMySearch] = useState();
 
   useEffect(() => {
     axios
@@ -16,32 +21,52 @@ const HomePage = () => {
   }, []);
 
   console.log(phoneList);
+  console.log(myOption, typeof myOption);
+  console.log(searchWord);
+
+  const mySearchHandler = (e) => {
+    e.preventDefault();
+    if (myOption === undefined) alert("검색필터를 선택해주세요");
+    setMySearch({ filter: myOption, forSearch: searchWord });
+  };
+
+  console.log(mySearch);
+  if (mySearch !== undefined)
+    window.location.href = mySearch.filter + "?mySearch=" + mySearch.forSearch;
 
   return (
     <>
-      <SearchBox>
+      <SearchBox onSubmit={mySearchHandler}>
         <Search>상품 검색</Search>
         <hr />
         <div>
           <Search>검색</Search>
-          <select>
-            <option>전체</option>
-            <option>상품명</option>
-            <option>브랜드</option>
-            <option>상품내용</option>
+          <select
+            onChange={(e) => setMyOption(e.target.value)}
+            value={mySearch?.filter}
+          >
+            <option value="all">전체</option>
+            <option value="title">상품명</option>
+            <option value="brand">브랜드</option>
+            <option value="description">상품내용</option>
           </select>
-          <input type="text" />
+          <input
+            required
+            type="text"
+            onChange={(e) => setSearchWord(e.target.value)}
+            value={mySearch?.searchWord}
+          />
           <button>조회</button>
         </div>
       </SearchBox>
-      <StockList phoneList={phoneList} />
+      <StockList phoneList={phoneList} mySearch={mySearch} />
     </>
   );
 };
 
 export default HomePage;
 
-const SearchBox = styled.div`
+const SearchBox = styled.form`
   background-color: white;
   border-radius: 10px;
   box-shadow: 3px 3px 1px rgba(0, 0, 0, 0.1);
