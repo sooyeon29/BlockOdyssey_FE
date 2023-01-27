@@ -77,7 +77,7 @@ const SearchBox = styled.div`
   background-color: white;
   border-radius: 10px;
   box-shadow: 3px 3px 1px rgba(0, 0, 0, 0.1);
-  margin: 20px 10px;
+  margin: 30px 10px 20px 10px;
   hr {
     border-top: 1px solid darkgray;
     height: 1px;
@@ -89,17 +89,21 @@ const SearchBox = styled.div`
   }
   select {
     width: 120px;
-    height: 30px;
+    height: 35px;
     margin: 10px 10px 10px 60px;
+    border-radius: 5px;
+    border: 1px solid darkgray;
   }
   input {
     width: 350px;
-    height: 30px;
+    height: 29px;
     margin: 10px;
+    border-radius: 5px;
+    border: 1px solid darkgray;
   }
   button {
     width: 60px;
-    height: 35px;
+    height: 31px;
     border-radius: 5px;
     margin: 10px;
     color: white;
@@ -114,6 +118,7 @@ const Search = styled.div`
 
 const TotalData = styled.div`
   margin: 30px 10px;
+  font-weight: bold;
 `;
 const Product = styled.div`
   background-color: white;
