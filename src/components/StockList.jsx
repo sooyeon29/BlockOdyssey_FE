@@ -1,14 +1,30 @@
 import styled from "styled-components";
 
-const StockList = ({ phoneList, mySearch }) => {
-  console.log(window.location.pathname);
-  console.log(window.location.search);
+const StockList = ({ phoneList }) => {
+  // console.log(window.location.pathname);
+  // console.log(window.location.search);
+  const selectBox = window.location.pathname.split("/", 2)[1];
+  console.log(selectBox, "분류선택!");
+  const selectWord = window.location.search.split("=", 2)[1];
+  console.log(selectWord, "검색단어");
+  console.log(phoneList, "리스트");
+
+  const searchList = phoneList?.filter((phone) => {
+    if (selectWord === undefined) return phone;
+    if (selectBox === "title" && phone.title.indexOf !== -1)
+      return phone.title.includes(selectWord);
+    if (selectBox === "brand" && phone.brand.indexOf !== -1)
+      return phone.brand.includes(selectWord);
+    if (selectBox === "description" && phone.description.indexOf !== -1)
+      return phone.description.includes(selectWord);
+  });
+  console.log(searchList, "검색결과리스트");
 
   return (
     <>
       <TotalData>
         검색된 데이터 :{" "}
-        {phoneList === undefined ? "" : Object.keys(phoneList).length}건
+        {phoneList === undefined ? "" : Object.keys(searchList).length}건
       </TotalData>
       <Product>
         <List>
@@ -24,20 +40,19 @@ const StockList = ({ phoneList, mySearch }) => {
             </Category>
           </thead>
           <tbody>
-            {mySearch === undefined &&
-              phoneList?.map((phone) => {
-                return (
-                  <Category key={phone.id}>
-                    <td>{phone.id}</td>
-                    <td>{phone.title}</td>
-                    <td>{phone.brand}</td>
-                    <td>{phone.description.substring(0, 40)}...</td>
-                    <td>{phone.price}</td>
-                    <td>{phone.rating}</td>
-                    <td>{phone.stock}</td>
-                  </Category>
-                );
-              })}
+            {searchList?.map((search) => {
+              return (
+                <Category key={search.id}>
+                  <td>{search.id}</td>
+                  <td>{search.title}</td>
+                  <td>{search.brand}</td>
+                  <td>{search.description.substring(0, 40)}...</td>
+                  <td>{search.price}</td>
+                  <td>{search.rating}</td>
+                  <td>{search.stock}</td>
+                </Category>
+              );
+            })}
           </tbody>
         </List>
       </Product>

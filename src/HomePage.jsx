@@ -1,9 +1,7 @@
 import axios from "axios";
-import { async } from "q";
 import { useEffect, useState } from "react";
 import styled from "styled-components";
 import StockList from "./components/StockList";
-import useInput from "./hooks/useInput";
 
 const HomePage = () => {
   const [phoneList, setPhoneList] = useState();
