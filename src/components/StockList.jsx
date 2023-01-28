@@ -1,24 +1,27 @@
 import styled from "styled-components";
 
-const StockList = ({ phoneList }) => {
-  // console.log(window.location.pathname);
-  // console.log(window.location.search);
+const StockList = ({ phoneList, limit, offset }) => {
   const selectBox = window.location.pathname.split("/", 2)[1];
-  console.log(selectBox, "분류선택!");
   const selectWord = window.location.search.split("=", 2)[1];
-  console.log(selectWord, "검색단어");
-  console.log(phoneList, "리스트");
 
   const searchList = phoneList?.filter((phone) => {
     if (selectWord === undefined) return phone;
     if (selectBox === "title" && phone.title.indexOf !== -1)
-      return phone.title.includes(selectWord);
+      return phone.title.toLowerCase().includes(selectWord);
     if (selectBox === "brand" && phone.brand.indexOf !== -1)
-      return phone.brand.includes(selectWord);
+      return phone.brand.toLowerCase().includes(selectWord);
     if (selectBox === "description" && phone.description.indexOf !== -1)
-      return phone.description.includes(selectWord);
+      return phone.description.toLowerCase().includes(selectWord);
   });
-  console.log(searchList, "검색결과리스트");
+
+  const postsData = (posts) => {
+    if (posts) {
+      const result = posts.slice(offset, offset + limit);
+      return result;
+    }
+  };
+
+  const showList = postsData(searchList);
 
   return (
     <>
@@ -40,16 +43,16 @@ const StockList = ({ phoneList }) => {
             </Category>
           </thead>
           <tbody>
-            {searchList?.map((search) => {
+            {showList?.map((show) => {
               return (
-                <Category key={search.id}>
-                  <td>{search.id}</td>
-                  <td>{search.title}</td>
-                  <td>{search.brand}</td>
-                  <td>{search.description.substring(0, 40)}...</td>
-                  <td>{search.price}</td>
-                  <td>{search.rating}</td>
-                  <td>{search.stock}</td>
+                <Category key={show.id}>
+                  <td>{show.id}</td>
+                  <td>{show.title}</td>
+                  <td>{show.brand}</td>
+                  <td>{show.description.substring(0, 40)}...</td>
+                  <td>{show.price}</td>
+                  <td>{show.rating}</td>
+                  <td>{show.stock}</td>
                 </Category>
               );
             })}

@@ -13,26 +13,15 @@ const HomePage = () => {
   const [page, setPage] = useState(1);
   const limit = row;
   const offset = (page - 1) * limit;
-  console.log(parseInt(row), "처음선택전숫자!!!!!!!!!!!!");
+
   useEffect(() => {
     axios
       .get(`https://dummyjson.com/products?limit=100`)
       .then((res) => {
         setPhoneList(res.data.products);
       })
-      .catch((err) => console.log(err));
+      .catch((err) => alert("err"));
   }, []);
-
-  console.log(phoneList);
-  console.log(myOption, typeof myOption);
-  console.log(searchWord);
-  console.log(page, "$$$$$$$$$$$$$$$$$페이지");
-  const postsData = (posts) => {
-    if (posts) {
-      const result = posts.slice(offset, offset + limit);
-      return result;
-    }
-  };
 
   const mySearchHandler = (e) => {
     e.preventDefault();
@@ -40,10 +29,9 @@ const HomePage = () => {
     setMySearch({ filter: myOption, forSearch: searchWord });
   };
 
-  console.log(mySearch);
   if (mySearch !== undefined)
     window.location.href = mySearch.filter + "?mySearch=" + mySearch.forSearch;
-  console.log(phoneList?.length, "길이");
+  const seletRow = phoneList?.length / parseInt(row);
   return (
     <>
       <SearchBox onSubmit={mySearchHandler}>
@@ -51,10 +39,7 @@ const HomePage = () => {
         <hr />
         <div>
           <Search>검색</Search>
-          <select
-            onChange={(e) => setMyOption(e.target.value)}
-            value={mySearch?.filter}
-          >
+          <select onChange={(e) => setMyOption(e.target.value)}>
             <option value="all">전체</option>
             <option value="title">상품명</option>
             <option value="brand">브랜드</option>
@@ -64,12 +49,11 @@ const HomePage = () => {
             required
             type="text"
             onChange={(e) => setSearchWord(e.target.value)}
-            value={mySearch?.searchWord}
           />
           <button>조회</button>
         </div>
       </SearchBox>
-      <StockList phoneList={postsData(phoneList)} />
+      <StockList phoneList={phoneList} limit={limit} offset={offset} />
       <Page>
         <div>페이지당 행</div>
         <select
@@ -87,7 +71,7 @@ const HomePage = () => {
           page={page}
           totalPosts={phoneList?.length}
           setPage={setPage}
-          selectRow={phoneList?.length / parseInt(row)}
+          selectRow={seletRow}
         />
       </Page>
     </>
