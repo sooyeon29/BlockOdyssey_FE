@@ -71,6 +71,21 @@ const Pagination = ({ totalPosts, limit, page, setPage }) => {
 
 export default Pagination;
 
-const PageSection = styled.div``;
-const ButtonWrap = styled.div``;
-const Button = styled.button``;
+const PageSection = styled.div`
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+`;
+const ButtonWrap = styled.div`
+  margin: 20px auto;
+`;
+const Button = styled.button`
+  margin: 3px;
+  background-color: transparent;
+  border: 0.5px solid gray;
+  border-radius: 3px;
+  &:focus {
+    background-color: darkgray;
+  }
+`;
