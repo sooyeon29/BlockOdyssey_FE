@@ -1,6 +1,6 @@
 import styled from "styled-components";
 
-const StockList = ({ phoneList }) => {
+const StockList = ({ phoneList, limit, offset }) => {
   // console.log(window.location.pathname);
   // console.log(window.location.search);
   const selectBox = window.location.pathname.split("/", 2)[1];
@@ -19,6 +19,15 @@ const StockList = ({ phoneList }) => {
       return phone.description.toLowerCase().includes(selectWord);
   });
   console.log(searchList, "검색결과리스트");
+
+  const postsData = (posts) => {
+    if (posts) {
+      const result = posts.slice(offset, offset + limit);
+      return result;
+    }
+  };
+
+  const showList = postsData(searchList);
 
   return (
     <>
@@ -40,16 +49,16 @@ const StockList = ({ phoneList }) => {
             </Category>
           </thead>
           <tbody>
-            {searchList?.map((search) => {
+            {showList?.map((show) => {
               return (
-                <Category key={search.id}>
-                  <td>{search.id}</td>
-                  <td>{search.title}</td>
-                  <td>{search.brand}</td>
-                  <td>{search.description.substring(0, 40)}...</td>
-                  <td>{search.price}</td>
-                  <td>{search.rating}</td>
-                  <td>{search.stock}</td>
+                <Category key={show.id}>
+                  <td>{show.id}</td>
+                  <td>{show.title}</td>
+                  <td>{show.brand}</td>
+                  <td>{show.description.substring(0, 40)}...</td>
+                  <td>{show.price}</td>
+                  <td>{show.rating}</td>
+                  <td>{show.stock}</td>
                 </Category>
               );
             })}

@@ -23,12 +23,12 @@ const HomePage = () => {
       .catch((err) => console.log(err));
   }, []);
 
-  const postsData = (posts) => {
-    if (posts) {
-      const result = posts.slice(offset, offset + limit);
-      return result;
-    }
-  };
+  // const postsData = (posts) => {
+  //   if (posts) {
+  //     const result = posts.slice(offset, offset + limit);
+  //     return result;
+  //   }
+  // };
 
   const mySearchHandler = (e) => {
     e.preventDefault();
@@ -46,10 +46,7 @@ const HomePage = () => {
         <hr />
         <div>
           <Search>검색</Search>
-          <select
-            onChange={(e) => setMyOption(e.target.value)}
-            value={mySearch?.filter}
-          >
+          <select onChange={(e) => setMyOption(e.target.value)}>
             <option value="all">전체</option>
             <option value="title">상품명</option>
             <option value="brand">브랜드</option>
@@ -59,12 +56,11 @@ const HomePage = () => {
             required
             type="text"
             onChange={(e) => setSearchWord(e.target.value)}
-            value={mySearch?.searchWord}
           />
           <button>조회</button>
         </div>
       </SearchBox>
-      <StockList phoneList={postsData(phoneList)} />
+      <StockList phoneList={phoneList} limit={limit} offset={offset} />
       <Page>
         <div>페이지당 행</div>
         <select
