@@ -1,13 +1,8 @@
 import styled from "styled-components";
 
 const StockList = ({ phoneList, limit, offset }) => {
-  // console.log(window.location.pathname);
-  // console.log(window.location.search);
   const selectBox = window.location.pathname.split("/", 2)[1];
-  console.log(selectBox, "분류선택!");
   const selectWord = window.location.search.split("=", 2)[1];
-  console.log(selectWord, "검색단어");
-  console.log(phoneList, "리스트");
 
   const searchList = phoneList?.filter((phone) => {
     if (selectWord === undefined) return phone;
@@ -18,7 +13,6 @@ const StockList = ({ phoneList, limit, offset }) => {
     if (selectBox === "description" && phone.description.indexOf !== -1)
       return phone.description.toLowerCase().includes(selectWord);
   });
-  console.log(searchList, "검색결과리스트");
 
   const postsData = (posts) => {
     if (posts) {

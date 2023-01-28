@@ -13,22 +13,15 @@ const HomePage = () => {
   const [page, setPage] = useState(1);
   const limit = row;
   const offset = (page - 1) * limit;
-  console.log(parseInt(row), "처음선택전숫자!!!!!!!!!!!!");
+
   useEffect(() => {
     axios
       .get(`https://dummyjson.com/products?limit=100`)
       .then((res) => {
         setPhoneList(res.data.products);
       })
-      .catch((err) => console.log(err));
+      .catch((err) => alert("err"));
   }, []);
-
-  // const postsData = (posts) => {
-  //   if (posts) {
-  //     const result = posts.slice(offset, offset + limit);
-  //     return result;
-  //   }
-  // };
 
   const mySearchHandler = (e) => {
     e.preventDefault();
@@ -38,7 +31,7 @@ const HomePage = () => {
 
   if (mySearch !== undefined)
     window.location.href = mySearch.filter + "?mySearch=" + mySearch.forSearch;
-
+  const seletRow = phoneList?.length / parseInt(row);
   return (
     <>
       <SearchBox onSubmit={mySearchHandler}>
@@ -78,7 +71,7 @@ const HomePage = () => {
           page={page}
           totalPosts={phoneList?.length}
           setPage={setPage}
-          selectRow={phoneList?.length / parseInt(row)}
+          selectRow={seletRow}
         />
       </Page>
     </>
