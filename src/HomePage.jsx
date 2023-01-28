@@ -9,10 +9,11 @@ const HomePage = () => {
   const [myOption, setMyOption] = useState();
   const [searchWord, setSearchWord] = useState();
   const [mySearch, setMySearch] = useState();
+  const [row, setRow] = useState(10);
   const [page, setPage] = useState(1);
   const limit = 10;
   const offset = (page - 1) * limit;
-
+  console.log(parseInt(row), "처음선택전숫자!!!!!!!!!!!!");
   useEffect(() => {
     axios
       .get(`https://dummyjson.com/products?limit=100`)
@@ -69,11 +70,18 @@ const HomePage = () => {
         </div>
       </SearchBox>
       <StockList phoneList={postsData(phoneList)} />
+      <div>페이지당 행</div>
+      <select onChange={(e) => setRow(e.target.value)}>
+        <option value="10">10</option>
+        <option value="20">20</option>
+        <option value="50">50</option>
+      </select>
       <Pagination
         limit={limit}
         page={page}
         totalPosts={phoneList?.length}
         setPage={setPage}
+        selectRow={phoneList?.length / parseInt(row)}
       />
     </>
   );
