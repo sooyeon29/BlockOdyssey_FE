@@ -23,7 +23,7 @@ const StockList = ({ phoneList }) => {
   return (
     <>
       <TotalData>
-        검색된 데이터 :{" "}
+        검색된 데이터 :
         {phoneList === undefined ? "" : Object.keys(searchList).length}건
       </TotalData>
       <Product>

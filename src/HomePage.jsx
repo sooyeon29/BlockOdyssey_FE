@@ -2,12 +2,16 @@ import axios from "axios";
 import { useEffect, useState } from "react";
 import styled from "styled-components";
 import StockList from "./components/StockList";
+import Pagination from "./components/Pagination";
 
 const HomePage = () => {
   const [phoneList, setPhoneList] = useState();
   const [myOption, setMyOption] = useState();
   const [searchWord, setSearchWord] = useState();
   const [mySearch, setMySearch] = useState();
+  const [page, setPage] = useState(1);
+  const limit = 10;
+  const offset = (page - 1) * limit;
 
   useEffect(() => {
     axios
@@ -22,6 +26,13 @@ const HomePage = () => {
   console.log(myOption, typeof myOption);
   console.log(searchWord);
 
+  const postsData = (posts) => {
+    if (posts) {
+      let result = posts.slice(offset, offset + limit);
+      return result;
+    }
+  };
+
   const mySearchHandler = (e) => {
     e.preventDefault();
     if (myOption === undefined) alert("검색필터를 선택해주세요");
@@ -31,7 +42,7 @@ const HomePage = () => {
   console.log(mySearch);
   if (mySearch !== undefined)
     window.location.href = mySearch.filter + "?mySearch=" + mySearch.forSearch;
-
+  console.log(phoneList?.length, "길이");
   return (
     <>
       <SearchBox onSubmit={mySearchHandler}>
@@ -57,7 +68,13 @@ const HomePage = () => {
           <button>조회</button>
         </div>
       </SearchBox>
-      <StockList phoneList={phoneList} mySearch={mySearch} />
+      <StockList phoneList={postsData(phoneList)} />
+      <Pagination
+        limit={limit}
+        page={page}
+        totalPosts={phoneList?.length}
+        setPage={setPage}
+      />
     </>
   );
 };

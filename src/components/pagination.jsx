@@ -1,58 +1,76 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import styled from "styled-components";
 
-const Pagination = ({ totalPage, limit, page, setPage }) => {
-  // 총 페이지 갯수에 따라 Pagination 갯수 정하기, limit 단위로 페이지 리스트 넘기기
-  const [currentPageArray, setCurrentPageArray] = useState([]);
-  const [totalPageArray, setTotalPageArray] = useState([]);
-
-  useEffect(() => {
-    if (page % limit === 1) {
-      setCurrentPageArray(totalPageArray[Math.floor(page / limit)]);
-    } else if (page % limit === 0) {
-      setCurrentPageArray(totalPageArray[Math.floor(page / limit) - 1]);
-    }
-  }, [page]);
-
-  useEffect(() => {
-    const slicedPageArray = sliceArrayByLimit(totalPage, limit);
-    setTotalPageArray(slicedPageArray);
-    setCurrentPageArray(slicedPageArray[0]);
-  }, [totalPage]);
+const Pagination = ({ totalPosts, limit, page, setPage }) => {
+  const numPages = Math.ceil(totalPosts / limit);
+  const [currPage, setCurrPage] = useState(page);
+  let firstNum = currPage - (currPage % 10) + 1;
+  let lastNum = currPage - (currPage % 10) + 10;
+  //console.log({"currPage is":currPage, "firsNum is" : firstNum, "page is" : page})
 
   return (
-    <PaginationWrapper>
-      <FaAngleDoubleLeft onClick={() => setPage(1)} disabled={page === 1} />
-      <FaAngleLeft onClick={() => setPage(page - 1)} disabled={page === 1} />
-      <ButtonWrapper>
-        {currentPageArray?.map((i) => (
-          <PageButton
-            key={i + 1}
-            onClick={() => setPage(i + 1)}
-            aria-current={page === i + 1 ? "page" : null}
-          >
-            {i + 1}
-          </PageButton>
-        ))}
-      </ButtonWrapper>
-      <FaAngleRight
-        onClick={() => setPage(page + 1)}
-        disabled={page === totalPage}
-      />
-      <FaAngleDoubleRight
-        onClick={() => setPage(totalPage)}
-        disabled={page === totalPage}
-      />
-    </PaginationWrapper>
+    <PageSection>
+      <ButtonWrap>
+        <Button
+          onClick={() => {
+            setPage(page - 1);
+            setCurrPage(page - 2);
+          }}
+          disabled={page === 1}
+        >
+          &lt;
+        </Button>
+        <Button
+          onClick={() => setPage(firstNum)}
+          aria-current={page === firstNum ? "page" : null}
+        >
+          {firstNum}
+        </Button>
+        {Array(9)
+          .fill()
+          .map((_, i) => {
+            if (i <= 7) {
+              return (
+                <Button
+                  border="true"
+                  key={i + 1}
+                  onClick={() => {
+                    setPage(firstNum + 1 + i);
+                  }}
+                  aria-current={page === firstNum + 1 + i ? "page" : null}
+                >
+                  {firstNum + 1 + i}
+                </Button>
+              );
+            } else if (i >= 8) {
+              return (
+                <Button
+                  border="true"
+                  key={i + 1}
+                  onClick={() => setPage(lastNum)}
+                  aria-current={page === lastNum ? "page" : null}
+                >
+                  {lastNum}
+                </Button>
+              );
+            }
+          })}
+        <Button
+          onClick={() => {
+            setPage(page + 1);
+            setCurrPage(page);
+          }}
+          disabled={page === numPages}
+        >
+          &gt;
+        </Button>
+      </ButtonWrap>
+    </PageSection>
   );
 };
 
 export default Pagination;
 
-const PaginationWrapper = styled.div``;
-const FaAngleDoubleLeft = styled.div``;
-const FaAngleLeft = styled.div``;
-const ButtonWrapper = styled.div``;
-const PageButton = styled.div``;
-const FaAngleRight = styled.div``;
-const FaAngleDoubleRight = styled.div``;
+const PageSection = styled.div``;
+const ButtonWrap = styled.div``;
+const Button = styled.button``;
