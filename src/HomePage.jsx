@@ -2,13 +2,18 @@ import axios from "axios";
 import { useEffect, useState } from "react";
 import styled from "styled-components";
 import StockList from "./components/StockList";
+import Pagination from "./components/Pagination";
 
 const HomePage = () => {
   const [phoneList, setPhoneList] = useState();
   const [myOption, setMyOption] = useState();
   const [searchWord, setSearchWord] = useState();
   const [mySearch, setMySearch] = useState();
-
+  const [row, setRow] = useState(10);
+  const [page, setPage] = useState(1);
+  const limit = row;
+  const offset = (page - 1) * limit;
+  console.log(parseInt(row), "처음선택전숫자!!!!!!!!!!!!");
   useEffect(() => {
     axios
       .get(`https://dummyjson.com/products?limit=100`)
@@ -21,6 +26,13 @@ const HomePage = () => {
   console.log(phoneList);
   console.log(myOption, typeof myOption);
   console.log(searchWord);
+  console.log(page, "$$$$$$$$$$$$$$$$$페이지");
+  const postsData = (posts) => {
+    if (posts) {
+      const result = posts.slice(offset, offset + limit);
+      return result;
+    }
+  };
 
   const mySearchHandler = (e) => {
     e.preventDefault();
@@ -31,7 +43,7 @@ const HomePage = () => {
   console.log(mySearch);
   if (mySearch !== undefined)
     window.location.href = mySearch.filter + "?mySearch=" + mySearch.forSearch;
-
+  console.log(phoneList?.length, "길이");
   return (
     <>
       <SearchBox onSubmit={mySearchHandler}>
@@ -57,7 +69,27 @@ const HomePage = () => {
           <button>조회</button>
         </div>
       </SearchBox>
-      <StockList phoneList={phoneList} mySearch={mySearch} />
+      <StockList phoneList={postsData(phoneList)} />
+      <Page>
+        <div>페이지당 행</div>
+        <select
+          onChange={(e) => {
+            setRow(e.target.value);
+            setPage(1);
+          }}
+        >
+          <option value="10">10</option>
+          <option value="20">20</option>
+          <option value="50">50</option>
+        </select>
+        <Pagination
+          limit={limit}
+          page={page}
+          totalPosts={phoneList?.length}
+          setPage={setPage}
+          selectRow={phoneList?.length / parseInt(row)}
+        />
+      </Page>
     </>
   );
 };
@@ -105,4 +137,16 @@ const SearchBox = styled.form`
 const Search = styled.div`
   padding: 15px;
   font-weight: bold;
+`;
+const Page = styled.div`
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  div {
+    margin-right: 5px;
+  }
+  select {
+    margin-right: 10px;
+  }
 `;
