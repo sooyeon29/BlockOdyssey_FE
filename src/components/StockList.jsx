@@ -12,11 +12,11 @@ const StockList = ({ phoneList }) => {
   const searchList = phoneList?.filter((phone) => {
     if (selectWord === undefined) return phone;
     if (selectBox === "title" && phone.title.indexOf !== -1)
-      return phone.title.includes(selectWord);
+      return phone.title.toLowerCase().includes(selectWord);
     if (selectBox === "brand" && phone.brand.indexOf !== -1)
-      return phone.brand.includes(selectWord);
+      return phone.brand.toLowerCase().includes(selectWord);
     if (selectBox === "description" && phone.description.indexOf !== -1)
-      return phone.description.includes(selectWord);
+      return phone.description.toLowerCase().includes(selectWord);
   });
   console.log(searchList, "검색결과리스트");
 

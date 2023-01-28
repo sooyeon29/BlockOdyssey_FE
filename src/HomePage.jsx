@@ -23,10 +23,6 @@ const HomePage = () => {
       .catch((err) => console.log(err));
   }, []);
 
-  console.log(phoneList);
-  console.log(myOption, typeof myOption);
-  console.log(searchWord);
-  console.log(page, "$$$$$$$$$$$$$$$$$페이지");
   const postsData = (posts) => {
     if (posts) {
       const result = posts.slice(offset, offset + limit);
@@ -40,10 +36,9 @@ const HomePage = () => {
     setMySearch({ filter: myOption, forSearch: searchWord });
   };
 
-  console.log(mySearch);
   if (mySearch !== undefined)
     window.location.href = mySearch.filter + "?mySearch=" + mySearch.forSearch;
-  console.log(phoneList?.length, "길이");
+
   return (
     <>
       <SearchBox onSubmit={mySearchHandler}>
