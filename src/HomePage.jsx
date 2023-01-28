@@ -11,7 +11,7 @@ const HomePage = () => {
   const [mySearch, setMySearch] = useState();
   const [row, setRow] = useState(10);
   const [page, setPage] = useState(1);
-  const limit = 10;
+  const limit = row;
   const offset = (page - 1) * limit;
   console.log(parseInt(row), "처음선택전숫자!!!!!!!!!!!!");
   useEffect(() => {
@@ -26,10 +26,10 @@ const HomePage = () => {
   console.log(phoneList);
   console.log(myOption, typeof myOption);
   console.log(searchWord);
-
+  console.log(page, "$$$$$$$$$$$$$$$$$페이지");
   const postsData = (posts) => {
     if (posts) {
-      let result = posts.slice(offset, offset + limit);
+      const result = posts.slice(offset, offset + limit);
       return result;
     }
   };
@@ -70,19 +70,26 @@ const HomePage = () => {
         </div>
       </SearchBox>
       <StockList phoneList={postsData(phoneList)} />
-      <div>페이지당 행</div>
-      <select onChange={(e) => setRow(e.target.value)}>
-        <option value="10">10</option>
-        <option value="20">20</option>
-        <option value="50">50</option>
-      </select>
-      <Pagination
-        limit={limit}
-        page={page}
-        totalPosts={phoneList?.length}
-        setPage={setPage}
-        selectRow={phoneList?.length / parseInt(row)}
-      />
+      <Page>
+        <div>페이지당 행</div>
+        <select
+          onChange={(e) => {
+            setRow(e.target.value);
+            setPage(1);
+          }}
+        >
+          <option value="10">10</option>
+          <option value="20">20</option>
+          <option value="50">50</option>
+        </select>
+        <Pagination
+          limit={limit}
+          page={page}
+          totalPosts={phoneList?.length}
+          setPage={setPage}
+          selectRow={phoneList?.length / parseInt(row)}
+        />
+      </Page>
     </>
   );
 };
@@ -130,4 +137,16 @@ const SearchBox = styled.form`
 const Search = styled.div`
   padding: 15px;
   font-weight: bold;
+`;
+const Page = styled.div`
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  div {
+    margin-right: 5px;
+  }
+  select {
+    margin-right: 10px;
+  }
 `;

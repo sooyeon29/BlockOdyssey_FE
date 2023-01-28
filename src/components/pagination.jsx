@@ -4,7 +4,7 @@ import styled from "styled-components";
 const Pagination = ({ totalPosts, limit, page, setPage, selectRow }) => {
   const numPages = Math.ceil(totalPosts / limit);
   const [currPage, setCurrPage] = useState(page);
-  console.log(selectRow, "===================이렇게한다면===============");
+  // console.log(page, "===================이렇게한다면===============", setPage);
   let firstNum = currPage - (currPage % selectRow) + 1;
   let lastNum = currPage - (currPage % selectRow) + selectRow;
 
